@@ -1,0 +1,75 @@
+Intuition :
+We have to find out the cycle. Let's think in a different way from a real life example.
+
+Suppose two person is running in a circular track. Now, if 1st person move faster than 2nd one, then after certain time 1st person will again meet with 2nd person on the same track as the track is circular.
+
+Now, if the track is straigt line, two person will not meet agian anyway.
+
+We will use this concept to find out the cycle in Linked List.
+
+Approach
+We will take 2 pointer back and forward. Both of them start traversing the nodes of the linked list from the first node, I mean from head.
+
+Starting the Nodes from Head
+
+NodeList *back = head;
+NodeList *forward = head;
+Let there is a cycle in a linked list. Now, if "forward" node goes twice time faster than "back" node, they will meet agian on the track at some point.
+
+If there is no such cycle exist, then "forward" node will reach to the last node (null), before back one. So, we will check if forward node goes to the null or not. If doesn't goes to the null then we will continue traverse untill (forward == back) both pointer meet again. If they meet we will return true as there will exist a cycle.
+
+while(forward!=NULL && forward->next!= NULL)
+        {
+            back = back->next;
+            forward = forward->next->next;
+            
+            if(back==forward)
+            {
+                return true;
+            }
+        }
+Now, one thing that we still didn't consider. What if we don't have any node? So, in this case head will be NULL and we will return false as there no cycle exist.
+
+if (head==NULL) return false;
+We will check that at the beginning of the code the do the rest of the part.
+
+Complexity :
+Time complexity:
+As one while loop is used and all the component inside the loop is linear, so loop is performing n times operation. That's why time complexity will be : O(n).
+
+Space complexity :
+Through out the code, fixed space is used for pointer variables. So,
+no chance to increase the space for different cases. That's why space complexity is O(1).
+
+
+So the full code is - 
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if (head==NULL)
+          return false;
+          
+        ListNode *back = head;
+        ListNode *forward = head;
+
+        while(forward!=NULL && forward->next!= NULL)
+        {
+            back = back->next;
+            forward = forward->next->next;
+            
+            if(back==forward)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+};
