@@ -1,48 +1,78 @@
-Intuition :
+# Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
 We have to find out the cycle. Let's think in a different way from a real life example.
 
 Suppose two person is running in a circular track. Now, if 1st person move faster than 2nd one, then after certain time 1st person will again meet with 2nd person on the same track as the track is circular.
 
-Now, if the track is straigt line, two person will not meet agian anyway.
+Now, if the track is straigt line, two person will not meet agian anyway as faster person will reach to the end of the linear track before the slower one.
+
 
 We will use this concept to find out the cycle in Linked List.
 
-Approach
-We will take 2 pointer back and forward. Both of them start traversing the nodes of the linked list from the first node, I mean from head.
+# Approach
+<!-- Describe your approach to solving the problem. -->
+We will take 2 pointer back and forward. Both of them start traversing the nodes of the linked list from the first node, I mean from head. 
 
 Starting the Nodes from Head
-
+```
 NodeList *back = head;
 NodeList *forward = head;
-Let there is a cycle in a linked list. Now, if "forward" node goes twice time faster than "back" node, they will meet agian on the track at some point.
 
-If there is no such cycle exist, then "forward" node will reach to the last node (null), before back one. So, we will check if forward node goes to the null or not. If doesn't goes to the null then we will continue traverse untill (forward == back) both pointer meet again. If they meet we will return true as there will exist a cycle.
+```
 
+Let, there is a cycle in a linked list. Now, if "forward" pointer goes twice time faster than "back" pointer, they will meet agian on the track at some point. 
+
+If there is no such cycle exist, then "forward" pointer will reach to the end node, before "back" pointer. So, we will check if forward node is null or not. Cause if forward pointer is NULL or it's next node is NULL that means forward pointer reached to the end of the linked list and ther is no cycle.
+
+On the other hand if cycle exist, forward pointer will not be set to the NULL as it will always have a next node because of cycle.
+
+So, on the while loop condition we will check if "forward" or "forward->next" pointer is reached to the NULL or not. If, they are set to NULL, while loop will take a break and we willl print false as we know "forward" pointer will only set to NULL if there is no cycle.
+
+```
 while(forward!=NULL && forward->next!= NULL)
+    {
+        //Other conditions here;
+    }
+``` 
+
+Inside the while loop we will check if "forward" pointer and "back" pointer is same or not. Cause they will only equal when they are on the same position. As "forward" pointer is stepping 2times faster, so they (forward and back pointers) will only be equal if they meet on the same track again. So, if they are equal, they has met again and there is a cycle exist. That's why in this case the return will be true.
+
+```
+while(forward!=NULL && forward->next!= NULL)  /*Checking if forward
+                            pointer is reached to the end or not*/
+    {
+        back = back->next;             //Stepping one step forward
+        forward = forward->next->next; //Stepping two step forward
+        
+        if(back==forward) //Checking if they meet again
         {
-            back = back->next;
-            forward = forward->next->next;
-            
-            if(back==forward)
-            {
-                return true;
-            }
+            return true;  /*If meets again, return true
+                            cause there is a cycle*/
         }
+    }
+```
+
 Now, one thing that we still didn't consider. What if we don't have any node? So, in this case head will be NULL and we will return false as there no cycle exist.
-
+```
 if (head==NULL) return false;
-We will check that at the beginning of the code the do the rest of the part.
+```
 
-Complexity :
-Time complexity:
+We will check that at the beginning of the code and then will do the rest of the part.
+
+
+# Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
 As one while loop is used and all the component inside the loop is linear, so loop is performing n times operation. That's why time complexity will be : O(n).
 
-Space complexity :
-Through out the code, fixed space is used for pointer variables. So,
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+Through out the code, fixed space is used for pointer variables. So, 
 no chance to increase the space for different cases. That's why space complexity is O(1).
 
 
-So the full code is - 
+# Code
+```
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -51,6 +81,7 @@ So the full code is -
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+ 
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
@@ -73,3 +104,4 @@ public:
         return false;
     }
 };
+```
